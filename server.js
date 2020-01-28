@@ -9,12 +9,12 @@ app.use(express.static(__dirname + '/public'))
 
 app.use(jwt({
   // NOTE: we're using signature based authentication so this secret doesn't matter.
-  secret: 'somesecret',
+  secret: 'somesecret1',
   requestProperty: 'auth',
-  credentialsRequired: false
+  credentialsRequired: true
 }))
 
-const challenge = 'siawdawdgn this aaaaaaaaaaawdstring'
+const challenge = 'sign this string'
 
 app.get('/challenge', (req, res) => {
   res.json({ challenge })
@@ -75,6 +75,7 @@ async function verifySignature(_account, _data, _signature) {
   const instance = new ethers.Contract(_account, eip1271Abi, provider)
   const result = await instance.isValidSignature(_data, _signature)
   const verified = (result === magicValue)
+  const testToken = "0xdc0a683cf1ac997b843df13955408163f8f54d77b031e375ea80fad29438b641031fa235fc709339bf49cc5c3e1e7a575c025a73513fab1f8c83dc82b49ba5b61ce6d31ab73e1cafad03e257b054853b282a5bb51c262747a736331e9e66d69daf114bb6b31d7216bc7e0b9aee164755679c784a60e18e1d8e96f80ec3b1c472ff1c000000000000000000000000000000000000000000000000000000005e57ecc8"
 
   return verified
 }

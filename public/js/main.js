@@ -81,12 +81,13 @@ async function signChallenge() {
   const message = json.challenge
   const address = (await web3.eth.getAccounts())[0]
   const signature = await web3.eth.sign(message, address)
+  console.log("address: ", address)
   console.log("(Client) Here is the message signed with my pkey: ", signature)
 
   // NOTE: this secret doesn't matter if it's exposed because
   // the server does authentication by verifying
   // the signature from the auth key.
-  const TOKEN_SECRET = 'somesecret1'
+  const TOKEN_SECRET = 'somesecret'
   const TOKEN_ALGORITHM = 'HS256'
 
   const token = jwt.sign({ address, signature }, TOKEN_SECRET, {
@@ -104,7 +105,7 @@ async function verifyToken() {
   if (!token) {
     return { error: 'token not set' }
   }
-
+  console.log(token)
   console.log("(Client) Sending token to server...")
   const res = await fetch('/verify', {
     headers: {
